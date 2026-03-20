@@ -16,15 +16,15 @@ function App() {
     return [
       {
         id: 1, name: 'Valentina Mendoza', idNumber: '1.020.455.789', position: 'Gerente de Proyectos',
-        baseSalary: 4500000, bonuses: 500000, transportAllowance: 0, healthDeduction: 0, pensionDeduction: 0, netPay: 5000000
+        baseSalary: 4500000, bonuses: 500000, transportAllowance: 0, netPay: 5000000
       },
       {
         id: 2, name: 'Andrés Felipe Castro', idNumber: '1.032.112.334', position: 'Diseñador UI/UX',
-        baseSalary: 2200000, bonuses: 0, transportAllowance: 162000, healthDeduction: 0, pensionDeduction: 0, netPay: 2362000
+        baseSalary: 2200000, bonuses: 0, transportAllowance: 162000, netPay: 2362000
       },
       {
         id: 3, name: 'Sofía Rodríguez', idNumber: '1.015.667.889', position: 'Contadora',
-        baseSalary: 3800000, bonuses: 100000, transportAllowance: 0, healthDeduction: 0, pensionDeduction: 0, netPay: 3900000
+        baseSalary: 3800000, bonuses: 100000, transportAllowance: 0, netPay: 3900000
       }
     ];
   });
@@ -65,7 +65,7 @@ function App() {
   const exportCSV = () => {
     const headers = ['Nombre,Cédula,Cargo,Sueldo Base,Bonos,Aux. Transporte,Neto'];
     const rows = employees.map(e =>
-      `${e.name},${e.idNumber},${e.position},${e.baseSalary},${e.bonuses || 0},${e.transportAllowance},${e.netPay}`
+      `${e.name},${e.idNumber},${e.position},${e.baseSalary},${e.bonuses || 0},${e.transportAllowance || 0},${e.netPay}`
     );
     const csvContent = "data:text/csv;charset=utf-8," + headers.concat(rows).join("\n");
     const encodedUri = encodeURI(csvContent);
@@ -117,7 +117,7 @@ function App() {
     doc.text(`+ ${formatCurrency(emp.bonuses || 0)}`, 160, startY + 20, { align: "right" });
 
     doc.text("Auxilio de Transporte", 25, startY + 30);
-    doc.text(`+ ${formatCurrency(emp.transportAllowance)}`, 160, startY + 30, { align: "right" });
+    doc.text(`+ ${formatCurrency(emp.transportAllowance || 0)}`, 160, startY + 30, { align: "right" });
 
     // Net
     doc.line(25, startY + 35, 160, startY + 35);

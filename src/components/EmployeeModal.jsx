@@ -8,10 +8,11 @@ const EmployeeModal = ({ isOpen, onClose, onSave, employeeToEdit }) => {
         idNumber: '',
         position: '',
         baseSalary: '',
-        bonuses: '0'
+        bonuses: '0',
+        transportAllowance: '0'
     });
 
-    const [calc, setCalc] = useState(calculatePayroll(0, 0));
+    const [calc, setCalc] = useState(calculatePayroll(0, 0, 0));
 
     useEffect(() => {
         if (employeeToEdit) {
@@ -20,18 +21,24 @@ const EmployeeModal = ({ isOpen, onClose, onSave, employeeToEdit }) => {
                 idNumber: employeeToEdit.idNumber,
                 position: employeeToEdit.position,
                 baseSalary: employeeToEdit.baseSalary.toString(),
-                bonuses: (employeeToEdit.bonuses || 0).toString()
+                bonuses: (employeeToEdit.bonuses || 0).toString(),
+                transportAllowance: (employeeToEdit.transportAllowance || 0).toString()
             });
-            setCalc(calculatePayroll(employeeToEdit.baseSalary, employeeToEdit.bonuses || 0));
+            setCalc(calculatePayroll(
+                employeeToEdit.baseSalary,
+                employeeToEdit.bonuses || 0,
+                employeeToEdit.transportAllowance || 0
+            ));
         } else {
             setFormData({
                 name: '',
                 idNumber: '',
                 position: '',
                 baseSalary: '',
-                bonuses: '0'
+                bonuses: '0',
+                transportAllowance: '0'
             });
-            setCalc(calculatePayroll(0, 0));
+            setCalc(calculatePayroll(0, 0, 0));
         }
     }, [employeeToEdit, isOpen]);
 
@@ -40,7 +47,11 @@ const EmployeeModal = ({ isOpen, onClose, onSave, employeeToEdit }) => {
         const newFormData = { ...formData, [name]: value };
         setFormData(newFormData);
 
-        setCalc(calculatePayroll(newFormData.baseSalary, newFormData.bonuses));
+        setCalc(calculatePayroll(
+            newFormData.baseSalary,
+            newFormData.bonuses,
+            newFormData.transportAllowance
+        ));
     };
 
     const handleSubmit = (e) => {
@@ -49,6 +60,8 @@ const EmployeeModal = ({ isOpen, onClose, onSave, employeeToEdit }) => {
             ...formData,
             id: employeeToEdit?.id || Date.now(),
             baseSalary: parseFloat(formData.baseSalary),
+            bonuses: parseFloat(formData.bonuses),
+            transportAllowance: parseFloat(formData.transportAllowance),
             ...calc
         });
         onClose();
@@ -115,8 +128,19 @@ const EmployeeModal = ({ isOpen, onClose, onSave, employeeToEdit }) => {
                                 className="input-field"
                             />
                         </div>
-                        <div className="col-span-2">
-                            <label className="block text-sm font-medium text-slate-500 mb-1">Bonificaciones / Extras</label>
+                        <div>
+                            <label className="block text-sm font-medium text-slate-500 mb-1">Auxilio Transporte</label>
+                            <input
+                                name="transportAllowance"
+                                type="number"
+                                value={formData.transportAllowance}
+                                onChange={handleChange}
+                                placeholder="0"
+                                className="input-field"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-slate-500 mb-1">Bonificaciones</label>
                             <input
                                 name="bonuses"
                                 type="number"
@@ -128,17 +152,17 @@ const EmployeeModal = ({ isOpen, onClose, onSave, employeeToEdit }) => {
                         </div>
                     </div>
 
-                    <div className="bg-slate-50 rounded-2xl p-4 space-y-2 mt-4">
+                    <div className="bg-slate-50 rounded-2xl p-4 space-y-2 mt-4 font-medium text-slate-600">
                         <div className="flex justify-between text-sm italic">
-                            <span className="text-slate-500">Bonos/Extras:</span>
-                            <span className="font-semibold text-emerald-600">+{formatCurrency(calc.bonuses)}</span>
+                            <span>Sueldo Base:</span>
+                            <span>{formatCurrency(calc.baseSalary)}</span>
                         </div>
-                        <div className="flex justify-between text-sm italic">
-                            <span className="text-slate-500">Auxilio Transporte:</span>
-                            <span className="font-semibold text-emerald-600">+{formatCurrency(calc.transportAllowance)}</span>
+                        <div className="flex justify-between text-sm italic border-b border-slate-200 pb-2">
+                            <span>Adicionales (Transporte + Bonos):</span>
+                            <span className="text-emerald-600">+{formatCurrency(calc.transportAllowance + calc.bonuses)}</span>
                         </div>
-                        <div className="flex justify-between border-t border-slate-200 pt-2 mt-2 font-bold">
-                            <span className="text-slate-900 italic">Neto a Recibir:</span>
+                        <div className="flex justify-between pt-2 text-lg font-bold">
+                            <span className="text-slate-900 italic">Total Neto:</span>
                             <span className="text-indigo-600 underline underline-offset-4 decoration-lavender-blue/50 italic">{formatCurrency(calc.netPay)}</span>
                         </div>
                     </div>
