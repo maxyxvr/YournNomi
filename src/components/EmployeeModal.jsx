@@ -137,14 +137,6 @@ const EmployeeModal = ({ isOpen, onClose, onSave, employeeToEdit }) => {
                             <span className="text-slate-500">Auxilio Transporte:</span>
                             <span className="font-semibold text-emerald-600">+{formatCurrency(calc.transportAllowance)}</span>
                         </div>
-                        <div className="flex justify-between text-sm italic">
-                            <span className="text-slate-500">Salud (4%):</span>
-                            <span className="font-semibold text-rose-400">-{formatCurrency(calc.healthDeduction)}</span>
-                        </div>
-                        <div className="flex justify-between text-sm italic">
-                            <span className="text-slate-500">Pensión (4%):</span>
-                            <span className="font-semibold text-rose-400">-{formatCurrency(calc.pensionDeduction)}</span>
-                        </div>
                         <div className="flex justify-between border-t border-slate-200 pt-2 mt-2 font-bold">
                             <span className="text-slate-900 italic">Neto a Recibir:</span>
                             <span className="text-indigo-600 underline underline-offset-4 decoration-lavender-blue/50 italic">{formatCurrency(calc.netPay)}</span>

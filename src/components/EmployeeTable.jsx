@@ -8,7 +8,6 @@ const EmployeeTable = ({ employees, onEdit, onDelete, onDownloadStub }) => {
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-bold text-slate-900">Gestión de Trabajadores</h2>
                 <div className="flex space-x-2">
-                    {/* Add buttons or filters here if needed */}
                 </div>
             </div>
 
@@ -19,7 +18,7 @@ const EmployeeTable = ({ employees, onEdit, onDelete, onDownloadStub }) => {
                             <th className="py-4 px-4 font-medium">Nombre</th>
                             <th className="py-4 px-4 font-medium">Cédula</th>
                             <th className="py-4 px-4 font-medium text-right">Sueldo Base</th>
-                            <th className="py-4 px-4 font-medium text-right">Deducciones</th>
+                            <th className="py-4 px-4 font-medium text-right">Bonos</th>
                             <th className="py-4 px-4 font-medium text-right">Neto a Pagar</th>
                             <th className="py-4 px-4 font-medium text-center">Acciones</th>
                         </tr>
@@ -40,8 +39,8 @@ const EmployeeTable = ({ employees, onEdit, onDelete, onDownloadStub }) => {
                                     </td>
                                     <td className="py-4 px-4 text-slate-600 font-mono text-sm">{emp.idNumber}</td>
                                     <td className="py-4 px-4 text-right font-medium">{formatCurrency(emp.baseSalary)}</td>
-                                    <td className="py-4 px-4 text-right text-rose-400 font-medium">
-                                        {formatCurrency(emp.healthDeduction + emp.pensionDeduction)}
+                                    <td className="py-4 px-4 text-right text-emerald-500 font-medium">
+                                        +{formatCurrency(emp.bonuses || 0)}
                                     </td>
                                     <td className="py-4 px-4 text-right">
                                         <span className="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-sm font-bold">

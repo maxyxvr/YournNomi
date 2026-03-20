@@ -16,15 +16,15 @@ function App() {
     return [
       {
         id: 1, name: 'Valentina Mendoza', idNumber: '1.020.455.789', position: 'Gerente de Proyectos',
-        baseSalary: 4500000, bonuses: 500000, transportAllowance: 0, healthDeduction: 180000, pensionDeduction: 180000, netPay: 4640000
+        baseSalary: 4500000, bonuses: 500000, transportAllowance: 0, healthDeduction: 0, pensionDeduction: 0, netPay: 5000000
       },
       {
         id: 2, name: 'Andrés Felipe Castro', idNumber: '1.032.112.334', position: 'Diseñador UI/UX',
-        baseSalary: 2200000, bonuses: 0, transportAllowance: 162000, healthDeduction: 88000, pensionDeduction: 88000, netPay: 2186000
+        baseSalary: 2200000, bonuses: 0, transportAllowance: 162000, healthDeduction: 0, pensionDeduction: 0, netPay: 2362000
       },
       {
         id: 3, name: 'Sofía Rodríguez', idNumber: '1.015.667.889', position: 'Contadora',
-        baseSalary: 3800000, bonuses: 100000, transportAllowance: 0, healthDeduction: 152000, pensionDeduction: 152000, netPay: 3596000
+        baseSalary: 3800000, bonuses: 100000, transportAllowance: 0, healthDeduction: 0, pensionDeduction: 0, netPay: 3900000
       }
     ];
   });
@@ -59,14 +59,13 @@ function App() {
   const handleLogout = () => {
     if (window.confirm('¿Deseas cerrar la sesión?')) {
       alert('Sesión cerrada correctamente. (Mockup)');
-      // In a real app, logic to clear tokens/context would go here
     }
   };
 
   const exportCSV = () => {
-    const headers = ['Nombre,Cédula,Cargo,Sueldo Base,Bonos,Aux. Transporte,Salud,Pensión,Neto'];
+    const headers = ['Nombre,Cédula,Cargo,Sueldo Base,Bonos,Aux. Transporte,Neto'];
     const rows = employees.map(e =>
-      `${e.name},${e.idNumber},${e.position},${e.baseSalary},${e.bonuses || 0},${e.transportAllowance},${e.healthDeduction},${e.pensionDeduction},${e.netPay}`
+      `${e.name},${e.idNumber},${e.position},${e.baseSalary},${e.bonuses || 0},${e.transportAllowance},${e.netPay}`
     );
     const csvContent = "data:text/csv;charset=utf-8," + headers.concat(rows).join("\n");
     const encodedUri = encodeURI(csvContent);
@@ -104,7 +103,7 @@ function App() {
 
     // Details Table
     doc.setFillColor(248, 250, 252);
-    doc.rect(20, 80, 170, 70, 'F');
+    doc.rect(20, 80, 170, 50, 'F');
 
     const startY = 90;
     doc.text("Concepto", 25, startY);
@@ -120,19 +119,12 @@ function App() {
     doc.text("Auxilio de Transporte", 25, startY + 30);
     doc.text(`+ ${formatCurrency(emp.transportAllowance)}`, 160, startY + 30, { align: "right" });
 
-    doc.setTextColor(239, 68, 68);
-    doc.text("Deducción Salud (4%)", 25, startY + 40);
-    doc.text(`- ${formatCurrency(emp.healthDeduction)}`, 160, startY + 40, { align: "right" });
-
-    doc.text("Deducción Pensión (4%)", 25, startY + 50);
-    doc.text(`- ${formatCurrency(emp.pensionDeduction)}`, 160, startY + 50, { align: "right" });
-
     // Net
-    doc.line(25, startY + 55, 160, startY + 55);
+    doc.line(25, startY + 35, 160, startY + 35);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(16, 185, 129);
-    doc.text("NETO A PAGAR", 25, startY + 62);
-    doc.text(formatCurrency(emp.netPay), 160, startY + 62, { align: "right" });
+    doc.text("NETO A PAGAR", 25, startY + 42);
+    doc.text(formatCurrency(emp.netPay), 160, startY + 42, { align: "right" });
 
     doc.save(`colilla_${emp.name.replace(/\s+/g, '_')}.pdf`);
   };
